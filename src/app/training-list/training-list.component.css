@@ -1,0 +1,118 @@
+mat-table{
+    width: 100%
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.table1{
+    margin-bottom: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.formButton{
+    margin-bottom: 20px;
+    margin-left: 10px;
+
+}
+
+.table2{
+    margin-bottom: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.container-flex{
+    margin-bottom: 50px;
+    border-style: double;
+    border-color: black;
+    border-width: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 99%;
+}
+
+p{
+
+    font-size: 30px;
+    text-align: center;
+}
+
+.completeButton{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+
+}
+
+h1{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: 30px;
+}
+
+h2{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+
+}
+
+.mat-column-courseName{
+   /* width: 50%; */
+   flex: 0 0 30%;
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+   word-wrap: break-word;
+   word-break: break-word;
+   -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.mat-column-dueDate{
+    flex: 0 0 15%;
+}
+
+.mat-column-courseTypeDescr{
+    flex: 0 0 20%;
+}
+
+/* .mat-column-docID{
+    flex: 0 0 40%;
+} */
+
+.mat-column-actions{
+    flex: 0 0 10%;
+}
+
+.highlight{
+    background-color: orangered;
+}
+
+.topTable{
+  font-weight: bold;
+}
+
+.formClass{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+

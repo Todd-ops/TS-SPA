@@ -1,0 +1,129 @@
+<h1>Employee Training</h1>
+<h2>{{myDate | date: 'short'}}</h2>
+
+<form class="example-form" [formGroup]="nameForm" >
+  <mat-form-field class="example-full-width" appearance="fill" >
+    <mat-label>Employee ID</mat-label>
+    <input matInput id="empID" formControlName="empID" placeholder="Ex. 12345">
+  </mat-form-field>
+  <button class="formButton" mat-raised-button color="primary" (click)="getEmpTrain()">Get Training</button>
+  <div *ngFor="let item of dataSourcethree">
+    <button *ngIf="isSupervisorOrManager" class="formButton" mat-raised-button color="primary" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/training-view-supervisor/{{item.emplid}}" >Supervisor View</button>
+  </div>
+</form>
+
+
+<div>
+  <p hidden>Value: {{ userID }}</p>
+  <p *ngFor="let x of dataSourcethree" hidden>value: {{x.jobcode}}</p>
+</div>
+
+
+
+<div *ngIf="isShown" class="table1">
+  <mat-table [dataSource]="dataSourcetwo" class="mat-elevation-z8" id="topTable">
+    <ng-container matColumnDef="empName">
+      <mat-header-cell *matHeaderCellDef >Name</mat-header-cell>
+      <mat-cell *matCellDef="let emp">{{emp.empName}}</mat-cell>
+
+      <ng-container matColumnDef="descr">
+        <mat-header-cell *matHeaderCellDef >Job Title</mat-header-cell>
+        <mat-cell *matCellDef="let emp">{{emp.descr}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="wcDesc">
+        <mat-header-cell *matHeaderCellDef>Department</mat-header-cell>
+        <mat-cell *matCellDef="let emp">{{emp.wcDesc}}</mat-cell>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="jobcode">
+        <mat-header-cell *matHeaderCellDef>Job Code</mat-header-cell>
+        <mat-cell *matCellDef="let emp">{{emp.jobcode}}</mat-cell>
+      </ng-container> -->
+
+      <ng-container matColumnDef="supervisor">
+        <mat-header-cell *matHeaderCellDef>Supervisor</mat-header-cell>
+        <mat-cell *matCellDef="let emp">{{emp.supervisor}}</mat-cell>
+      </ng-container>
+
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumnsTwo" color="primary"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumnsTwo;"></mat-row>
+  </mat-table>
+</div>
+
+
+<div *ngIf="isShown" class="table2">
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="courseName">
+      <mat-header-cell *matHeaderCellDef>Course Name</mat-header-cell>
+      <mat-cell *matCellDef="let train">{{train.courseName}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="dueDate">
+      <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
+      <mat-cell *matCellDef="let train" >{{train.dueDate | date: 'shortDate'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="courseTypeDescr">
+      <mat-header-cell *matHeaderCellDef>Training Type</mat-header-cell>
+      <mat-cell *matCellDef="let train">{{train.courseTypeDescr}}</mat-cell>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="docID">
+      <mat-header-cell *matHeaderCellDef>Doc ID</mat-header-cell>
+      <mat-cell *matCellDef="let train" (click)="getURL(train.docID)">{{train.docID}}</mat-cell>
+    </ng-container> -->
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>VWI</mat-header-cell>
+      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="getURL(train.docID); getIndex(train.docID); goDown()" *ngIf="train.docID !== 0">Open Training</button></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actionLink">
+      <mat-header-cell *matHeaderCellDef>Doc Link</mat-header-cell>
+      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="openNewTab(train.courseURL)" *ngIf="train.docID === 0">Open Training</button></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="complete">
+      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <mat-cell *matCellDef="let train"><button *ngIf="timer == true && train.docID == docIDIndex" mat-raised-button color="accent" (click)="[onComplete(train.docID), confirmBox(train.empID, train.EmpRecID, train.strID, train.sDate)]">Complete Training</button></mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns; let i = index" [ngClass]="{'highlight': isDue(row.dueDate)}"></mat-row>
+  </mat-table>
+</div>
+
+<div >
+  <p *ngIf="docTitleShown">{{docTitle}}</p>
+</div>
+
+<form #empInfoForm="ngForm" (ngSubmit)="onComplete(empInfoForm.value)" style="margin-top: 20px; margin-bottom: 20px;">
+  <div *ngIf="isShown" class="formClass">
+
+    <label> Today's Date: </label>
+    <input name="sDate" type="text" ngModel style="margin-right: 10px;">
+
+    <label> Employee ID: </label>
+    <input name="empID" type="text" ngModel style="margin-right: 10px;">
+
+    <label> Employee Training Record ID: </label>
+    <input name="EmpRecID" type="text" ngModel style="margin-right: 10px;">
+
+    <label> Revised By: </label>
+    <input name="strID" type="text" ngModel>
+
+  </div>
+</form>
+
+<iframe id="targetRed" class="container-flex"
+[src]="iFrameUrl"
+*ngIf="displayIFrame"
+style="height: 90%;  position:absolute; background: white;">
+
+</iframe>
+
+

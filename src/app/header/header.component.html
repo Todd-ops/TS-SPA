@@ -1,0 +1,26 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+      <div class="navbar-header">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"(click)="collapsed = !collapsed">
+            <span class="navbar-toggler-icon" *ngFor="let iconBar of [1]"></span>
+          </button>
+          <img src="assets/G Logo with Name.png" routerLink="/" />
+      </div>
+      <div class="collapse navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
+          <ul class="navbar-nav">
+              <!-- <li class="nav-item" routerLinkActive="active"><a class="nav-link active" (click)="onSelect('training-list')" routerLink="/training-list">Search VWI</a></li> -->
+              <!-- <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a class="nav-link active" (click)="onSelect" routerLink="/view-doc">View VWI</a></li> -->
+              <li class="nav-item"><a class="nav-link active" href="http://reeweb01/Home/">Home</a></li>
+          </ul>
+          <!-- <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" role="button">Manage<span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="#">Save Data</a></li>
+                      <li><a href="#">Fetch Data</a></li>
+                  </ul>
+              </li>
+          </ul> -->
+      </div>
+  </div>
+</nav>

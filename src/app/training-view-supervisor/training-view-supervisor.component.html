@@ -1,0 +1,22 @@
+<p>
+  training-view-supervisor works!
+</p>
+
+<div>
+  <button class="btn btn-primary" >see me?</button>
+</div>
+
+<div >
+  <h2>Employee List:</h2>
+  <ul class="employees">
+    <li *ngFor="let item of empList">
+      <button class="btn btn-primary" type="button"  (click)="getSupView(item.empID)">
+        <span class="badge">{{item.empRecID}}</span>
+      </button>
+    </li>
+
+  </ul>
+
+    <!-- click me! -->
+
+</div>

@@ -1,0 +1,12 @@
+<app-header (featureSelected)="onNavigate($event)"></app-header>
+<div class="container-flex">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- <app-training-list></app-training-list> -->
+      <router-outlet></router-outlet>
+      <!-- <app-search-doc *ngIf="loadedFeature === 'search-doc'"></app-search-doc>
+      <app-view-doc *ngIf="loadedFeature !== 'search-doc'"></app-view-doc> -->
+      
+    </div>
+  </div>
+</div>
