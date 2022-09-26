@@ -12,7 +12,7 @@ export interface EmployeeInfo {
   dueDate: string;
   docID: number;
   courseTypeDescr: string;
-  // https://www.section.io/engineering-education/angular12-material-table/
+
 }
 
 export interface EmployeeInfo2 {
@@ -100,6 +100,8 @@ export class TrainingListComponent implements OnInit {
 
   myDate2 = new Date();
 
+  //public formInformation: FormGroup;
+
   formInformation: any = [];
 
   completeData: any;
@@ -115,6 +117,13 @@ export class TrainingListComponent implements OnInit {
       empID:''
 
     })
+
+    // this.formInformation = this.formBuilder.group({
+    //   sDate: '',
+    //   empID:'',
+    //   EmpRecID:'',
+    //   strID:''
+    // })
 
    }
 
@@ -220,6 +229,9 @@ export class TrainingListComponent implements OnInit {
     return this.myDate > new Date(date);
     }
 
+    // onSubmit(data: any){
+    //   console.log('DataDataData',data)
+    // }
 
    onComplete(docID: number){
 
@@ -238,12 +250,12 @@ export class TrainingListComponent implements OnInit {
     });
     console.log("the form", this.form)
 
-    this.formInformation = this.form;
+    //this.formInformation = this.form;
 
     //this.confirmBox();
    }
 
-  confirmBox(EmpID: any, EmpRcdID: any, strID: any, sDate: any){
+  confirmBox(empID: number, EmpRcdID: number, strID: string, sDate: Date){
     Swal.fire({
       title: 'Do you want to complete this training?',
       text: 'Click yes to complete.',
@@ -257,8 +269,9 @@ export class TrainingListComponent implements OnInit {
          //this.trainingService.postTrainingComplete().subscribe((response) => {
           // this.
          //})
-        console.log("This is the data needed", this.formInformation.value)
-        this.trainingService.postTrainingComplete(EmpID, EmpRcdID, strID, sDate).subscribe((response) => {
+        console.log("This is the data needed", this.form.value)
+        //train.empID, train.EmpRecID, train.strID, train.sDate this is for Html templa
+        this.trainingService.postTrainingComplete(empID, EmpRcdID, strID, sDate).subscribe((response) => {
           this.completeData = response;
           console.log(response);
         })

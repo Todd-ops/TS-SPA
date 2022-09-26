@@ -102,19 +102,23 @@
 </div>
 
 <form #empInfoForm="ngForm" (ngSubmit)="onComplete(empInfoForm.value)" style="margin-top: 20px; margin-bottom: 20px;">
-  <div *ngIf="isShown" class="formClass">
-
+  <div *ngIf="isShown" class="formClass" >
+  <!--(ngSubmit)="onComplete(empInfoForm.value)"  -->
     <label> Today's Date: </label>
-    <input name="sDate" type="text" ngModel style="margin-right: 10px;">
+    <input name="sDate" type="text" ngModel style="margin-right: 10px;" >
+    <!-- formControlName="sDate" -->
 
     <label> Employee ID: </label>
-    <input name="empID" type="text" ngModel style="margin-right: 10px;">
+    <input name="empID" type="text" ngModel style="margin-right: 10px;" >
+    <!-- formControlName="empID" -->
 
     <label> Employee Training Record ID: </label>
-    <input name="EmpRecID" type="text" ngModel style="margin-right: 10px;">
+    <input name="EmpRecID" type="text" ngModel style="margin-right: 10px;" >
+    <!-- formControlName="EmpRecID" -->
 
     <label> Revised By: </label>
-    <input name="strID" type="text" ngModel>
+    <input name="strID" type="text" ngModel >
+    <!-- formControlName="strID" -->
 
   </div>
 </form>

@@ -34,6 +34,7 @@ getSupervisorView(EmpID: any){
   let view = `http://10.51.8.92:440/api/Training/GetTrainingUnderSupervisor/${EmpID}`;
   return this.http.get(view)
 }
+
 //Call to the api in question....
 postTrainingComplete(EmpID: number, EmpRcdID: number, strID: string, sDate: Date): Observable<FormInfo>{
 
