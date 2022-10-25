@@ -4,19 +4,55 @@
 <form class="example-form" [formGroup]="nameForm" >
   <mat-form-field class="example-full-width" appearance="fill" >
     <mat-label>Employee ID</mat-label>
-    <input matInput id="empID" formControlName="empID" placeholder="Ex. 12345">
+    <input matInput id="empID" formControlName="empID" placeholder="Ex. 12345" >
   </mat-form-field>
-  <button class="formButton" mat-raised-button color="primary" (click)="getEmpTrain()">Get Training</button>
+  <button class="formButton" mat-raised-button color="primary"  (click)="getEmpTrain()" *ngIf="!isShown">Get Training</button>
+  <button class="formButton" mat-raised-button color="primary"  (click)="refresh()" *ngIf="isShown">Log Out</button>
   <div *ngFor="let item of dataSourcethree">
-    <button *ngIf="isSupervisorOrManager" class="formButton" mat-raised-button color="primary" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/training-view-supervisor/{{item.emplid}}" >Supervisor View</button>
+    <button *ngIf="isSupervisorOrManager" class="formButton" mat-raised-button color="primary" (click)="toggleDiv()" >Supervisor View</button>
   </div>
 </form>
-
+<!-- routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/training-view-supervisor/{{item.emplid}}" => for routing on sup btn -->
 
 <div>
   <p hidden>Value: {{ userID }}</p>
   <p *ngFor="let x of dataSourcethree" hidden>value: {{x.jobcode}}</p>
 </div>
+
+<div *ngIf="selectDiv" >
+  <div class="supView">
+    <mat-accordion *ngFor="let employee of employeeLessons | keyvalue" >
+
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                           (closed)="panelOpenState = false">
+        <mat-expansion-panel-header >
+          <mat-panel-title >
+            {{employee.key.trim()}}
+          </mat-panel-title>
+          <mat-panel-description style="margin-left: 20px" >
+            Assigned Training: {{employee.value.length}}
+            <!-- <div *ngFor="let item =["$dueDate"] [ngForOf]="employeeLessons"></div> -->
+          </mat-panel-description >
+
+        </mat-expansion-panel-header>
+
+        <ol>
+          <li *ngFor="let lesson of employee.value">
+            <dl class="row">
+              <dt>{{lesson.courseName}}</dt>
+              <!-- <dd>{{lesson.courseName}}</dd> -->
+              <!-- <dt>Due Date:</dt> -->
+              <dd [ngClass]="{'highlight': isDue(lesson.dueDate)}">Due Date: {{lesson.dueDate | date:'short'}}</dd>
+            </dl>
+          </li>
+        </ol>
+
+      </mat-expansion-panel>
+      <!-- [ngClass]="{'highlight': isDue(lesson.dueDate)}">Due Date: {{lesson.dueDate.count | date:'short'}} -->
+    </mat-accordion>
+  </div>
+</div>
+
 
 
 
@@ -78,17 +114,18 @@
 
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef>VWI</mat-header-cell>
-      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="getURL(train.docID); getIndex(train.docID); goDown()" *ngIf="train.docID !== 0">Open Training</button></mat-cell>
+      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="getURL(train.docID); getIndex(train.empTrainRcdID); goDown()" *ngIf="train.docID !== 0">Open Training</button></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="actionLink">
       <mat-header-cell *matHeaderCellDef>Doc Link</mat-header-cell>
-      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="openNewTab(train.courseURL)" *ngIf="train.docID === 0">Open Training</button></mat-cell>
+      <mat-cell *matCellDef="let train"><button mat-raised-button color="primary" (click)="openNewTab(train.courseURL); getCourseIndex(train.empTrainRcdID);  getCompleteOption(); "*ngIf="train.docID === 0">Open Training</button></mat-cell> <!--openNewTab(train.courseURL);-->
     </ng-container>
 
-    <ng-container matColumnDef="complete">
-      <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-      <mat-cell *matCellDef="let train"><button *ngIf="timer == true && train.docID == docIDIndex" mat-raised-button color="accent" (click)="[onComplete(train.docID), confirmBox(train.empID, train.EmpRecID, train.strID, train.sDate)]">Complete Training</button></mat-cell>
+    <ng-container matColumnDef="complete" >
+      <mat-header-cell *matHeaderCellDef >Action</mat-header-cell>
+      <mat-cell *matCellDef="let train"><button (click)="onComplete(train.empTrainRcdID); confirmBox(train.empID, train.EmpRcdID, train.strID, train.sDate); getType(train.courseTypeDescr);" *ngIf="timer === true && train.empTrainRcdID === docIDIndex || timer === true && train.empTrainRcdID === courseIDIndex"  mat-raised-button color="accent" >Complete Training</button></mat-cell> <!--, onComplete(train.docID), confirmBox(train.empID, train.EmpRcdID, train.strID, train.sDate)-->
+      <!-- <mat-cell *matCellDef="let train"><button *ngIf="timer == true && train.courseTypeDescr == handsOn">Contact Supervisor</button></mat-cell> -->
     </ng-container>
 
 
@@ -101,23 +138,23 @@
   <p *ngIf="docTitleShown">{{docTitle}}</p>
 </div>
 
-<form #empInfoForm="ngForm" (ngSubmit)="onComplete(empInfoForm.value)" style="margin-top: 20px; margin-bottom: 20px;">
+<form [formGroup]="formInformation" (ngSubmit)="onComplete($event)" style="margin-top: 20px; margin-bottom: 20px;" hidden>
   <div *ngIf="isShown" class="formClass" >
   <!--(ngSubmit)="onComplete(empInfoForm.value)"  -->
     <label> Today's Date: </label>
-    <input name="sDate" type="text" ngModel style="margin-right: 10px;" >
+    <input name="sDate" type="text" formControlName="sDate" style="margin-right: 10px;" >
     <!-- formControlName="sDate" -->
 
     <label> Employee ID: </label>
-    <input name="empID" type="text" ngModel style="margin-right: 10px;" >
+    <input name="empID" type="text" formControlName="empID" style="margin-right: 10px;" >
     <!-- formControlName="empID" -->
 
     <label> Employee Training Record ID: </label>
-    <input name="EmpRecID" type="text" ngModel style="margin-right: 10px;" >
+    <input name="EmpRecID" type="text" formControlName="EmpRcdID" style="margin-right: 10px;" >
     <!-- formControlName="EmpRecID" -->
 
     <label> Revised By: </label>
-    <input name="strID" type="text" ngModel >
+    <input name="strID" type="text" formControlName="strID" >
     <!-- formControlName="strID" -->
 
   </div>
@@ -126,7 +163,11 @@
 <iframe id="targetRed" class="container-flex"
 [src]="iFrameUrl"
 *ngIf="displayIFrame"
-style="height: 90%;  position:absolute; background: white;">
+style="height: 90%;
+position:absolute; background:white;
+border-radius: 10px;
+border-style: solid;
+border-width: 3px;">
 
 </iframe>
 

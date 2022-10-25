@@ -113,6 +113,18 @@ h2{
   align-items: center;
 }
 
+.supView{
+  /*display: flex;*/
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-size: 30px;
+
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
 
 
 

@@ -1,6 +1,6 @@
 export interface FormInfo {
   EmpID: number;
   EmpRcdID: number;
-  strID: string;
+  strID: number;
   sDate: Date;
 }

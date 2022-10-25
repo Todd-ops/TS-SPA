@@ -1,5 +1,5 @@
 import { FormInfo } from './../training-list/formInfo';
-import { Injectable } from '@angular/core';
+import { Injectable, Input } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -9,9 +9,18 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class TrainingServiceService {
-  public formInfo: FormInfo[]=[];
+  //public formInfo: FormInfo[]=[];
   public dataServer = 'http://10.51.8.92:440/api/Training/GetEmployeeTraining';
-constructor(private http: HttpClient, ) { }
+  @Input() item = '';
+constructor(private http: HttpClient) { }
+
+baseURL: string = "http://10.51.8.92:440/api/Training/UpdateRecords/"
+headers={
+  headers: new HttpHeaders({
+    "Accept": "text/plain",
+    'Content-Type': 'application/json'//application/json
+  })
+}
 
 
 
@@ -35,11 +44,35 @@ getSupervisorView(EmpID: any){
   return this.http.get(view)
 }
 
-//Call to the api in question....
-postTrainingComplete(EmpID: number, EmpRcdID: number, strID: string, sDate: Date): Observable<FormInfo>{
 
-  return this.http.post<FormInfo>(`http://10.51.8.92:440/api/Training/UpdateRecords/${EmpID}/${EmpRcdID}/${strID}/${sDate}`, [EmpID, EmpRcdID, strID, sDate]);
+postTrainingComplete(EmpID: FormInfo, EmpRcdID: FormInfo, strID: FormInfo, sDate: FormInfo): Observable<FormInfo>{
+  const headerOptions = new HttpHeaders();
+  //headerOptions.set('Content-Type', '');
+
+  // const body=JSON.stringify(
+  //   {
+  //     EmpID: EmpID,
+  //     EmpRcdID: EmpRcdID,
+  //     strID: strID,
+  //     sDate: sDate
+  //   });
+
+  const body={
+    EmpID: EmpID,
+    EmpRcdID: EmpRcdID,
+    strID: strID,
+    sDate: sDate
+  };
+
+  // console.log("EmpID", EmpID)
+  // console.log("EmpRcdID", EmpRcdID)
+  // console.log("strID", strID)
+  // console.log("sDate", sDate)
+  //console.log("body", body)
+  return this.http.post<FormInfo>(this.baseURL, body, {"headers": headerOptions});//, {"headers": headerOptions}
+
+
+
 }
-//EmpID: number, EmpRcdID: number, strID: string, sDate: Date
-//(EmpID: FormInfo, EmpRcdID: FormInfo, strID: FormInfo, sDate: FormInfo): Observable<FormInfo>
+
 }

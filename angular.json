@@ -19,19 +19,24 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
+
           "options": {
+
             "outputPath": "dist/training-system",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
+
             "tsConfig": "tsconfig.app.json",
+
             "assets": [
               "src/favicon.ico",
+
               "src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              
+
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/styles.css"
             ],
@@ -74,12 +79,19 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "/training-system:build",
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "training-system:build:production"
+
+
             },
             "development": {
               "browserTarget": "training-system:build:development"
+
             }
           },
           "defaultConfiguration": "development"
@@ -88,8 +100,11 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "training-system:build"
+
           }
+
         },
+
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
@@ -108,8 +123,11 @@
             "scripts": []
           }
         }
+
       }
+
     }
+
   },
   "defaultProject": "training-system"
 }

@@ -8,11 +8,11 @@ import { TrainingListComponent } from './training-list/training-list.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-
+import { FilterPipe } from './training-list/filter.pipe';
 
 import { MaterialModule } from './material/material.module';
 import { TrainingViewSupervisorComponent } from './training-view-supervisor/training-view-supervisor.component';
- 
+
 const appRoutes: Routes = [
   { path: '', redirectTo: '/training-list', pathMatch: 'full'},
   { path: 'training-list', component: TrainingListComponent },
@@ -21,11 +21,12 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [			
+  declarations: [
     AppComponent,
       HeaderComponent,
       TrainingListComponent,
-      TrainingViewSupervisorComponent
+      TrainingViewSupervisorComponent,
+      FilterPipe
    ],
   imports: [
     BrowserModule,
@@ -36,7 +37,7 @@ const appRoutes: Routes = [
     MaterialModule,
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'top',
-      useHash: true 
+      useHash: true
     }),
 
   ],
